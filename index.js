@@ -1,5 +1,5 @@
 import Identicon from 'identicon.js';
-import icons, { iconHash } from './icons';
+import icons from './icons';
 
 function generateImage(hash, size = 40) {
   const image = new Identicon(hash, {
@@ -15,16 +15,12 @@ function generateImage(hash, size = 40) {
 
 class TokenIcon extends HTMLElement {
   connectedCallback() {
-    const hash = this.getAttribute('hash');
+    const hash = this.getAttribute('hash').toLowerCase();
 
-    if (this.hasAttribute('color')) {
-      const colorAttrValue = this.getAttribute('color');
+    this.setIconColor(this.getAttribute('color') || '#fff');
 
-      this.setIconColor(colorAttrValue);
-    }
-
-    const customIcon = iconHash[hash];
-    const icon = customIcon ? icons[customIcon] : generateImage(hash, 32);
+    const customIcon = icons[hash];
+    const icon = customIcon ? customIcon : generateImage(hash, 40);
 
     this.setTemplate(icon, !customIcon);
   }
@@ -55,7 +51,8 @@ class TokenIcon extends HTMLElement {
 
     if (isIdenticon) {
       const svgElement = this.shadowRoot.querySelector('svg');
-      svgElement.setAttribute('viewBox', '0 0 64 64');
+      svgElement.setAttribute('viewBox', '0 0 80 80');
+      svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     }
   }
 
