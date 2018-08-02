@@ -1,0 +1,9 @@
+# dependencies
+/node_modules
+
+# editors
+.idea
+.vscode
+
+# misc
+.DS_Store
