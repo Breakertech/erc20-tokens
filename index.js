@@ -20,9 +20,11 @@ class TokenIcon extends HTMLElement {
     this.setIconColor(this.getAttribute('color') || '#fff');
 
     const customIcon = icons[hash];
-    const icon = customIcon ? customIcon : generateImage(hash, 40);
-
-    this.setTemplate(icon, !customIcon);
+    if ( customIcon ) {
+      customIcon().then(({default: icon}) => this.setTemplate(icon))
+    } else {
+      this.setTemplate(generateImage(hash, 40))
+    }
   }
 
   setTemplate(icon, isIdenticon) {
